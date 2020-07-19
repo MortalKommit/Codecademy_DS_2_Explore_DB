@@ -109,6 +109,10 @@ ON invoice_items.InvoiceId = invoices.InvoiceId
 GROUP BY 1
 ORDER BY 2 DESC
 LIMIT 10;
+
+-- Advanced Challenge
+
+-- How much revenue is generated each year, and what is its percent change 37 from the previous year? 
 WITH revenue as
 ( SELECT CAST(STRFTIME('%Y',InvoiceDate) as INT) AS 'Year', CAST(STRFTIME('%Y',InvoiceDate) as INT) - 1 AS 'Previous_Year', SUM(Total) AS 'Revenue_for_Year'
   FROM invoices
