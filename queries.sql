@@ -109,4 +109,13 @@ ON invoice_items.InvoiceId = invoices.InvoiceId
 GROUP BY 1
 ORDER BY 2 DESC
 LIMIT 10;
+WITH revenue as
+( SELECT CAST(STRFTIME('%Y',InvoiceDate) as INT) AS 'Year', CAST(STRFTIME('%Y',InvoiceDate) as INT) - 1 AS 'Previous_Year', SUM(Total) AS 'Revenue_for_Year'
+  FROM invoices
+  GROUP BY 1
+  ORDER BY 1 DESC
+)
+SELECT curr.Year, curr.Previous_Year, curr.Revenue_for_Year, ROUND((curr.Revenue_for_Year - prev.Revenue_for_Year)/prev.Revenue_for_Year * 1.0, 2) AS 'Pct_change_compared_to_last_year'
+FROM revenue curr LEFT JOIN revenue prev
+ON curr.Previous_Year = prev.Year;
 
